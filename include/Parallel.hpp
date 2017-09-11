@@ -75,7 +75,7 @@ public:
 	//! give a list of Y measurements, can be plotted as well (json format)
 	void writeout_ymeasure(const std::string output);
 
-	void statistics_output(size_type boxsize);
+	void statistics_output(size_type boxsize, double orig_error_rate);
 };
 
 #endif

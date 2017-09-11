@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
 	//std::cout << "found paths" << std::endl;
 
-	newsimulation.statistics_output(boxsize);
+	newsimulation.statistics_output(boxsize, probab);
 
 	//writeout of complete lattice (large filesize for larger lattices)
 	//newsimulation.writeout_graph("graph.json");

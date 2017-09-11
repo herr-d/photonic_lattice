@@ -36,6 +36,7 @@ public:
 
 	Graph(const size_type size, Parallel& p)
 		:_structure_pos(0), _isPurified(false), _nrVerticesOnAxis(size), _max_id(size*size*size), _structureExists(false), _parent(p){
+		assert(size%2 == 0); //size has to be even for all boxes to properly align
 		return;
 	}
 

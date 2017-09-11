@@ -269,7 +269,7 @@ void Parallel::writeout_graph(const std::string output){
 	return;
 }
 
-void Parallel::statistics_output(size_type boxsize){
+void Parallel::statistics_output(size_type boxsize, double orig_error_rate){
 	//count connections
 	size_type connections = 0;
 	for (size_type i=0; i < _box_lattice.get_x()*_box_lattice.get_y()*_box_lattice.get_z(); ++i){
@@ -289,6 +289,6 @@ void Parallel::statistics_output(size_type boxsize){
 	double error_rate = static_cast<double>(_failed_connections) / static_cast<double>(connections);
 
 	//format: distance original_error_rate new_error_rate elapsed time
-	std::cout << boxsize << " " << error_rate << " "<< std::endl;
+	std::cout << boxsize << " " << orig_error_rate << " " << error_rate << std::endl;
 	return;
 }

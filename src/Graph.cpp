@@ -85,13 +85,12 @@ void Graph::generate_connections(const size_type& box_id, const float& success_r
 					if(dist(rng) < success_rate){//fusion gate inside this microcluster
 						finish_connection(id, d);
 						next_connection(id, d, id);
-					}
-					else{//continue long distance connection
+					}else{//continue long distance connection
 						continue_connection(id, d);
 					}
-				}
-				else{
-					finish_connection(id, d);
+				}else{
+					if(dist(rng) < success_rate) //fusion gate inside this microcluster
+						finish_connection(id, d);
 				}
 			}
 		}
@@ -193,6 +192,7 @@ void Graph::finish_connection(const position& id, const direction& d){
 	for(auto it : _unfinished.at(id)){
 		if (it.second==d){
 			//add connection
+			//std::cout << id.second << " " << it.first.second << std::endl;
 			add_to_neighbors(id.second, it.first);
 			size_type id2 = it.first.second;
 			size_type boxid = it.first.first;
@@ -226,8 +226,9 @@ void Graph::continue_connection(const position& id, const direction& d){
 		return;
 	auto it = _unfinished[id].begin();
 	for(auto it : _unfinished[id]){
-		if(it.second==d)
+		if(it.second==d){
 			next_connection(id, d, it.first);
+		}
 	}
 }
 
@@ -244,6 +245,8 @@ void Graph::measure_structure(){
 bool Graph::find_structure(const direction& normal_dir, const size_type no_handles){
 	vec pos = {_nrVerticesOnAxis/2,_nrVerticesOnAxis/2,_nrVerticesOnAxis/2};
 
+	size_type winner_so_far= 0 ;
+	uint max_so_far = 0;
 	//begin 3D loop
 	for (int z=1; z <= _nrVerticesOnAxis-4; ++z){
 	int dz = (z%2)? z/2 : -z/2;
@@ -251,14 +254,16 @@ bool Graph::find_structure(const direction& normal_dir, const size_type no_handl
 	int dy = (y%2)? y/2 : -y/2;
 	for (int x=1; x <= _nrVerticesOnAxis-4; ++x){
 	int dx = (x%2)? x/2 : -x/2;
-
 		//current proposed position
 		pos.at(0) = _nrVerticesOnAxis/2 + dx;
 		pos.at(1) = _nrVerticesOnAxis/2 + dy;
 		pos.at(2) = _nrVerticesOnAxis/2 + dz;
 		size_type id = idFromCoordinate(pos);
+
 		if(is_proper_node(pos) && get_orientation(id) == normal_dir)
 		{
+			/*
+			// OLD METHOD
 			if(_neighbors[id].size() >= 4)
 			{
 				bool good = true;
@@ -272,10 +277,28 @@ bool Graph::find_structure(const direction& normal_dir, const size_type no_handl
 					return true;
 				}
 			}
+			*/
+
+			//NEW METHOD
+
+			//give more weight to structure origin by counting those connecitons twice:
+			//uint cur_score = _neighbors.at(id).size();
+			uint cur_score = 0; //count all connections one
+			for(auto nb : _neighbors.at(id)){
+				cur_score += _parent._boxes.at(nb.first)._neighbors[nb.second].size();
+			}
+			if (cur_score > max_so_far){
+				winner_so_far = id;
+				max_so_far = cur_score;
+			}
 		}
 
+
 	}}}// end 3D loop
-	return false;
+
+	_structure_pos = winner_so_far;
+	_structureExists=true;
+	return true;
 }
 
 

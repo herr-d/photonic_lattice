@@ -79,10 +79,13 @@ void Parallel::gen_lattice(const double probability){
 	//first check if empty
 	assert(_boxes.size()==0);
 	//TODO: parallize
+	std::cout << "x: " << _box_lattice.get_x() << std::endl;
+	std::cout << "y: " << _box_lattice.get_y() << std::endl;
+	std::cout << "z: " << _box_lattice.get_z() << std::endl;
 	for(size_type z = 0; z < _box_lattice.get_z(); ++z){
 	for(size_type y = 0; y < _box_lattice.get_y(); ++y){
 	for(size_type x = 0; x < _box_lattice.get_x(); ++x){
-
+		std::cout << x << " " << y << " " << z << std::endl;
 		_boxes.push_back(Graph(_box_size,*this));
 
 	}}}

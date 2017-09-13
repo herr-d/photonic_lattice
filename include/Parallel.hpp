@@ -20,7 +20,7 @@ public:
 	{}
 	
 	inline size_type get_x(){return _x;}
-	inline size_type get_y(){return _x;}
+	inline size_type get_y(){return _y;}
 	inline size_type get_z(){return _z;}
 	inline vec coordFromId(size_type id) const{
 		vec v {id % _x, (id/_x) %_y , (id/_x/_y)%_z};
@@ -52,7 +52,7 @@ public:
 	std::deque<Graph> _boxes;
 	uint64_t _failed_connections;
 
-	Parallel(const size_type& x, const size_type& y, const size_type z, const size_type boxsize)
+	Parallel(const size_type& x, const size_type& y, const size_type& z, const size_type boxsize)
 		:_box_lattice(x,y,z,*this), _box_size(boxsize), _failed_connections(0)
 	{
 		return;

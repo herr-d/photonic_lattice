@@ -244,9 +244,11 @@ void Graph::measure_structure(){
 
 bool Graph::find_structure(const direction& normal_dir, const size_type no_handles){
 	vec pos = {_nrVerticesOnAxis/2,_nrVerticesOnAxis/2,_nrVerticesOnAxis/2};
+	assert (_nrVerticesOnAxis >=6);
 
 	size_type winner_so_far= 0 ;
 	uint max_so_far = 0;
+	bool found = false;
 	//begin 3D loop
 	for (int z=1; z <= _nrVerticesOnAxis-4; ++z){
 	int dz = (z%2)? z/2 : -z/2;
@@ -288,6 +290,7 @@ bool Graph::find_structure(const direction& normal_dir, const size_type no_handl
 				cur_score += _parent._boxes.at(nb.first)._neighbors[nb.second].size();
 			}
 			if (cur_score > max_so_far){
+				found = true;
 				winner_so_far = id;
 				max_so_far = cur_score;
 			}
@@ -295,10 +298,11 @@ bool Graph::find_structure(const direction& normal_dir, const size_type no_handl
 
 
 	}}}// end 3D loop
-
-	_structure_pos = winner_so_far;
-	_structureExists=true;
-	return true;
+	if (found){
+		_structure_pos = winner_so_far;
+		_structureExists=true;
+	}
+	return found;
 }
 
 

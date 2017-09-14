@@ -264,27 +264,9 @@ bool Graph::find_structure(const direction& normal_dir, const size_type no_handl
 
 		if(is_proper_node(pos) && get_orientation(id) == normal_dir)
 		{
-			/*
-			// OLD METHOD
-			if(_neighbors[id].size() >= 4)
-			{
-				bool good = true;
-				for(auto nb : _neighbors.at(id)){
-					if (_parent._boxes.at(nb.first)._neighbors[nb.second].size()<no_handles)
-						good = false;
-				}
-				if(good){
-					_structure_pos = id;
-					_structureExists=true;
-					return true;
-				}
-			}
-			*/
-
-			//NEW METHOD
-
-			//give more weight to structure origin by counting those connecitons twice:
-			//uint cur_score = _neighbors.at(id).size();
+			if(_neighbors[id].size() < 4)
+				continue;
+			
 			uint cur_score = 0; //count all connections one
 			for(auto nb : _neighbors.at(id)){
 				cur_score += _parent._boxes.at(nb.first)._neighbors[nb.second].size();

@@ -10,11 +10,19 @@ output = "plots/distance_dependency.html"
 
 scatter = []
 
-files = [#["combined_15", 'error rate 15%'],
-	#["combined_20", 'error rate 20%'],
-	["combined_25", 'error rate 25%'],
-	#["combined_30", 'error rate 30%']
+files = [["distance_data/combined_15", 'error rate 15%'],
+	["distance_data/combined_20", 'error rate 20%'],
+	["distance_data/combined_25", 'error rate 25%'],
+	["distance_data/combined_30", 'error rate 30%'],
+	["distance_data/combined_35", 'error rate 35%'],
+	["distance_data/combined_40", 'error rate 40%'],
+	["distance_data/combined_test", 'test'],	
 ]
+
+
+#add improvement threshold
+scatter.append(Scatter(x = [6, 60], y = [0.145,0.145], name = "Threshold for<br>Raussendorf lattice", marker = dict(color = 'black')))
+
 
 
 for i in files:

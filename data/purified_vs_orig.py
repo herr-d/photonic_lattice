@@ -10,10 +10,19 @@ output = "plots/purified_vs_orig.html"
 
 plot_data = []
 
-files = [["distance_3", 'distance 3'],
-	["distance_6", 'distance 6'],
-	["distance_9", 'distance 9'],
-	["distance_12", 'distance 12']]
+files = [["purified_vs_orig_data/dist_6", 'distance 6'],
+	["purified_vs_orig_data/dist_8", 'distance 8'],
+	["purified_vs_orig_data/dist_12", 'distance 12'],
+	["purified_vs_orig_data/dist_16", 'distance 16'],
+	["purified_vs_orig_data/dist_24", 'distance 24'],
+	["purified_vs_orig_data/dist_32", 'distance 32'],
+	["purified_vs_orig_data/dist_40", 'distance 40'],
+]
+
+#add improvement threshold
+plot_data.append(Scatter(x = [0,0.5], y = [0,0.5], name = "improvement<br>threshold", marker = dict(color = 'black')))
+
+
 
 for i in files:
 	# prepare some data
@@ -33,13 +42,14 @@ for i in files:
 
 
 
+
 plotly.offline.plot({
 	"data": plot_data,
 	"layout" : Layout(title="error rate after purification",
-		width=700, height=500,
-		xaxis=dict(type="log", title="input error rate"),
-		yaxis=dict(type="log",range=[-2.5,0], title="output error rate"),
-		legend=dict(x=0.02))
+		width=800, height=500,
+		xaxis=dict(type="lin", dtick = 0.05, title="input error rate"),
+		yaxis=dict(type="lin", title="output error rate"),
+		legend=dict(x=0.06,y=1.05))
 	},
 	filename=output,
 	auto_open=False,

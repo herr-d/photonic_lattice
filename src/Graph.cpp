@@ -237,14 +237,20 @@ void Graph::measure_structure(){
 	if(structure_exist()){
 		//in all three dimensions
 		_ymeasurements.insert(_structure_pos);
+		for(auto nb : _neighbors.at(_structure_pos))
+		{
+			_ymeasurements.insert(nb.second);
+		}
 	}
 	return;
 }
 
 
-bool Graph::find_structure(const direction& normal_dir, const size_type no_handles){
+void Graph::find_structure(const direction& normal_dir, const size_type box_id){
 	vec pos = {_nrVerticesOnAxis/2,_nrVerticesOnAxis/2,_nrVerticesOnAxis/2};
 	assert (_nrVerticesOnAxis >=6);
+
+	const direction normal_dir2 = static_cast<direction> ((normal_dir +3)%6);
 
 	size_type winner_so_far= 0 ;
 	uint max_so_far = 0;
@@ -262,29 +268,46 @@ bool Graph::find_structure(const direction& normal_dir, const size_type no_handl
 		pos.at(2) = _nrVerticesOnAxis/2 + dz;
 		size_type id = idFromCoordinate(pos);
 
-		if(is_proper_node(pos) && get_orientation(id) == normal_dir)
-		{
+		if(is_proper_node(pos) && get_orientation(id)==normal_dir){
+			//find large structure
 			if(_neighbors[id].size() < 4)
 				continue;
-			
-			uint cur_score = 0; //count all connections one
-			for(auto nb : _neighbors.at(id)){
-				cur_score += _parent._boxes.at(nb.first)._neighbors[nb.second].size();
+
+			bool test = true;
+			uint cur_score = 0;
+			for(auto dir : {right, up, back, left, down, front}){
+				if (dir == normal_dir || dir == normal_dir2)
+					continue;
+				if(test == false)
+					break;
+				
+				test = false;
+				position last = {box_id, id + get_delta(dir)};
+				if(std::find(_neighbors.at(id).begin(), _neighbors.at(id).end(), last) != _neighbors.at(id).end()){
+					last.second += get_delta(dir);
+					if(std::find(_neighbors.at(id + get_delta(dir)).begin(), _neighbors.at(id+get_delta(dir)).end(),last) !=_neighbors.at(id+get_delta(dir)).end()){
+						test = true;
+						cur_score += _neighbors.at(last.second).size();
+					}
+				}
+
+				if(std::find(_neighbors.at(id).begin(), _neighbors.at(id).end(),last)!=_neighbors.at(id).end()){
+					test = true;
+					cur_score += _neighbors.at(last.second).size();
+				}
 			}
-			if (cur_score > max_so_far){
+			if (test && cur_score > max_so_far){
 				found = true;
 				winner_so_far = id;
 				max_so_far = cur_score;
 			}
 		}
 
-
 	}}}// end 3D loop
 	if (found){
 		_structure_pos = winner_so_far;
 		_structureExists=true;
 	}
-	return found;
 }
 
 
@@ -318,7 +341,9 @@ bool Graph::handle_dir_exists(const size_type& pos, const direction& dir){
 
 size_type Graph::get_structure_handle(const size_type& pos, const direction& dir){
 	assert(dir != get_orientation(_structure_pos));
-	// TODO get next
+
+	return pos + 2*get_delta(dir);
+	/*
 	vec pos1 = coordFromId(pos);
 	for(auto h : _neighbors.at(pos)){
 		vec coord = coordFromId(h.second);
@@ -327,7 +352,7 @@ size_type Graph::get_structure_handle(const size_type& pos, const direction& dir
 
 		if (coord.at(dir%3) < pos1.at(dir%3) && dir >=3)
 			return h.second;
-	}
+	}*/
 }
 
 

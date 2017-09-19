@@ -88,7 +88,7 @@ public:
 	bool is_proper_node(const vec & coord) const;
 	const bool on_boundary(size_type pos, const direction dir);
 	const int get_delta(const direction dir);
-	bool find_structure(const direction& dir, const size_type no_handles);
+	void find_structure(const direction& dir, const size_type box_id);
 	size_type get_structure_handle(const size_type& pos, const direction& dir);
 	bool handle_dir_exists(const size_type& pos, const direction& dir);
 	void measure_structure();

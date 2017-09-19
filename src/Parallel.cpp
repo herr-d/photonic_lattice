@@ -98,13 +98,7 @@ void Parallel::find_structures(){
 	for (size_type b = 0; b<_box_lattice.get_x()*_box_lattice.get_y()*_box_lattice.get_z(); ++b){
 		if(_box_lattice.is_proper_node(b)){
 			direction dir = _box_lattice.get_orientation(b);
-			if (_boxes.at(b).find_structure(dir, 4))
-				continue; //found very good structure
-			if (_boxes.at(b).find_structure(dir, 3))
-				continue; //found good structure
-			if (_boxes.at(b).find_structure(dir, 2)){
-				continue; // found ok structure
-			}
+			_boxes.at(b).find_structure(dir, b);
 		}
 	}
 	return;

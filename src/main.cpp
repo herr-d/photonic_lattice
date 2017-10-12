@@ -4,6 +4,7 @@
 #include <Purify.hpp>
 #include <sstream>
 #include <ctime>
+#include <chrono>
 
 //global rng: (Todo: needs to be threadsafe)
 std::mt19937_64 rng;
@@ -54,6 +55,7 @@ int main(int argc, char *argv[])
 
 	//std::cout << "generated lattice" <<std::endl;
 
+	auto begin = std::chrono::high_resolution_clock::now();
 	//now loop through boxes and find viable structure positions
 	newsimulation.find_structures();
 
@@ -61,6 +63,7 @@ int main(int argc, char *argv[])
 
 	//now find paths between the boxes
 	newsimulation.path_finding();
+	auto end = std::chrono::high_resolution_clock::now();
 
 	//std::cout << "found paths" << std::endl;
 
@@ -72,5 +75,6 @@ int main(int argc, char *argv[])
 	//writeout of paths (also large file size)
 	//newsimulation.writeout_ymeasure("ymeasure.json");
 
+	//newsimulation.length_output();
 	return 0;
 }

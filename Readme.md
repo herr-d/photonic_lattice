@@ -3,7 +3,7 @@
 
 # Linear Photonics Graph Purification
 
-This code is an efficient implementation of the path finding algorithm proposed in TODO.
+This code is an efficient implementation of the path finding algorithm proposed in <http://www.google.com/>.
 
 This software uses CMake as a build environment.
 Thus the requirements to compile this software are:

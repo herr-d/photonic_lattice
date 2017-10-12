@@ -15,13 +15,11 @@ files = [["distance_data/combined_15", 'error rate 15%'],
 	["distance_data/combined_25", 'error rate 25%'],
 	["distance_data/combined_30", 'error rate 30%'],
 	["distance_data/combined_35", 'error rate 35%'],
-	["distance_data/combined_40", 'error rate 40%'],
-	["distance_data/combined_test", 'test'],	
 ]
 
 
 #add improvement threshold
-scatter.append(Scatter(x = [6, 60], y = [0.145,0.145], name = "Threshold for<br>Raussendorf lattice", marker = dict(color = 'black')))
+scatter.append(Scatter(x = [6, 40], y = [0.145,0.145], name = "Threshold for<br>Raussendorf lattice", marker = dict(color = 'black'), fillcolor='rgba(255,255,0,0.2)', fill="tozeroy"))
 
 
 
@@ -42,8 +40,10 @@ for i in files:
 
 plot_div = plotly.offline.plot({
 	"data": scatter,
-	"layout" : Layout(title="probability of success for single path",
-		width=900, height=500,
+	"layout" : Layout(#title="probability of success for single path",
+		width=600, height=500,
+		xaxis=dict(type="lin", range=[8,44], showline=True, title="box size"),
+		yaxis=dict(type="lin", range=[0,1.1], showline=True, title="output error rate"),
 		legend=dict(x=0.78))
 	},
 	filename=output,

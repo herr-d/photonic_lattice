@@ -149,17 +149,18 @@ bool Astar::runAstar(uint iterations){
 	return false;
 }
 
-bool Astar::reconstructPath(){
+int Astar::reconstructPath(){
 	_parent._boxes.at(_goal.first)._ymeasurements.insert(_goal.second);
+	int count = 1;
 
 	position current = _goal;
 	
 	for(;;)
 	{
 		auto it = _cameFrom.find(current);
-
+		++count;
 		if (it == _cameFrom.end())
-			return true;
+			return count;
 
 		current = it->second;
 

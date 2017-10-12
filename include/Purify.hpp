@@ -37,7 +37,7 @@ public:
 	
 	bool runAstar(uint iterations);
 	size_type getfScore(const position & id0) const;
-	bool reconstructPath();
+	int reconstructPath();
 	bool isGoal(position & id) const;
 
 };

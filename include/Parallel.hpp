@@ -46,6 +46,7 @@ public:
 
 class Parallel
 {
+	std::vector<int> _lengthes;
 public:
 	SquareLattice _box_lattice;
 	const size_type _box_size;
@@ -76,6 +77,7 @@ public:
 	void writeout_ymeasure(const std::string output);
 
 	void statistics_output(size_type boxsize, double orig_error_rate);
+	void length_output();
 };
 
 #endif

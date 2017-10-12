@@ -165,7 +165,7 @@ void Parallel::path_finding(){
 			//now perform path finding
 			Astar path(dir, pos0, pos1, *this);
 			if(path.runAstar(iterations)){
-				path.reconstructPath();
+				_lengthes.push_back(path.reconstructPath());
 			}
 			else{
 				++_failed_connections;
@@ -283,5 +283,16 @@ void Parallel::statistics_output(size_type boxsize, double orig_error_rate){
 
 	//format: distance original_error_rate new_error_rate elapsed time
 	std::cout << boxsize << " " << orig_error_rate << " " << error_rate << std::endl;
+	return;
+}
+
+void Parallel::length_output(){
+	//count connections
+
+	for(auto l : _lengthes){
+		//format: distance original_error_rate new_error_rate elapsed time
+		std::cout << l << "\n";
+	}
+	std::cout.flush();
 	return;
 }
